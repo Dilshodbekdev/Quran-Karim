@@ -111,7 +111,7 @@ fun SurahContent(
                 }
             }
         }
-        AyahList(ayahViewModel = ayahViewModel, number = number)
+       // AyahList(ayahViewModel = ayahViewModel, number = number)
     }
 }
 

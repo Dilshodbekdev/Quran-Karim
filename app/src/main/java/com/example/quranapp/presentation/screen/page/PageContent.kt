@@ -1,44 +1,50 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
-package com.example.quranapp.presentation.screen.juz
+package com.example.quranapp.presentation.screen.page
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import com.example.quranapp.R
 import com.example.quranapp.presentation.navigation.Screen
+import com.example.quranapp.utils.AppBarCollapsedHeight
+import com.example.quranapp.utils.AppBarExpendedHeight
 import com.example.quranapp.utils.fonts
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import kotlin.math.absoluteValue
+import kotlin.math.max
+import kotlin.math.min
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun JuzContent(navController: NavController) {
-    val list = (1..30).map { it.toString() }
+fun PageContent(navController: NavController) {
+    val list = (1..604).map { it.toString() }
 
     Column(modifier = Modifier) {
-        /*Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Box(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
@@ -116,29 +122,29 @@ fun JuzContent(navController: NavController) {
                 }
             }
         }
-*/
+
         LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
+            cells = GridCells.Fixed(3),
 
             // content padding
             contentPadding = PaddingValues(
                 start = 12.dp,
+                top = 16.dp,
                 end = 12.dp,
                 bottom = 16.dp
             ),
             content = {
                 items(list.size) { index ->
-                    JuzItem(index = index + 1, navController = navController)
+                    PageItem(index = index + 1, navController = navController)
                 }
-            },
-            modifier = Modifier
-                .padding(bottom = 56.dp)
+            }
         )
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun JuzItem(index: Int, navController: NavController) {
+fun PageItem(index: Int, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -148,7 +154,7 @@ fun JuzItem(index: Int, navController: NavController) {
         elevation = 8.dp,
         onClick = {
             navController.navigate(
-                route = Screen.JuzDetails.passJuzData(
+                route = Screen.PageDetails.passPageData(
                     number = index
                 )
             )
@@ -166,21 +172,13 @@ fun JuzItem(index: Int, navController: NavController) {
                     )
                 )
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_quran),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(48.dp)
-                    .padding(top = 16.dp, end = 16.dp)
-            )
             Text(
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp)
                     .align(Alignment.TopStart),
-                text = "Juz $index",
+                text = "Page $index",
                 color = Color.White,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
             )
 
             Text(
@@ -204,4 +202,77 @@ fun JuzItem(index: Int, navController: NavController) {
             )
         }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PageContent(scrollState: LazyListState, navController: NavController) {
+    val list = (1..604).map { it.toString() }
+
+    /* LazyColumn(contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState) {
+         item {
+             Column(
+                 modifier = Modifier.padding(16.dp)
+             ) {
+                 for (i in 0..24) {
+                     Card(
+                         modifier = Modifier
+                             .fillMaxWidth()
+                             .padding(bottom = 5.dp)
+                             .height(75.dp),
+                         elevation = 5.dp,
+                         shape = RoundedCornerShape(10.dp)
+                     ) {
+                         Row(
+                             verticalAlignment = Alignment.CenterVertically
+                         ) {
+                             Image(
+                                 painter = painterResource(id = R.drawable.bg_card),
+                                 contentDescription = "Profile Image",
+                                 modifier = Modifier
+                                     .size(60.dp)
+                                     .clip(CircleShape)
+                             )
+
+                             Spacer(modifier = Modifier.width(10.dp))
+
+                             Column {
+                                 Text(
+                                     text = "Developer",
+                                     color = Color.Black,
+                                     fontSize = 15.sp,
+                                     fontWeight = FontWeight.Bold
+                                 )
+                                 Text(
+                                     text = "+91-1234567890",
+                                     color = Color.Black,
+                                     fontSize = 12.sp
+                                 )
+                             }
+                         }
+                     }
+
+                     Spacer(modifier = Modifier.height(10.dp))
+                 }
+             }
+         }
+     }*/
+
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(3),
+
+        // content padding
+        contentPadding = PaddingValues(
+            start = 12.dp,
+            top = AppBarExpendedHeight,
+            end = 12.dp,
+            bottom = 16.dp
+        ),
+        content = {
+            items(list.size) { index ->
+                PageItem(index = index + 1, navController = navController)
+            }
+        },
+        state = scrollState
+    )
 }

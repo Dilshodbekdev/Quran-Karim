@@ -1,20 +1,23 @@
 package com.example.quranapp.presentation.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quranapp.presentation.screen.juz.JuzScreen
 import com.example.quranapp.presentation.screen.juz_details.JuzDetailsScreen
 import com.example.quranapp.presentation.screen.main.MainScreen
+import com.example.quranapp.presentation.screen.page.PageScreen
+import com.example.quranapp.presentation.screen.page_details.PageDetailsScreen
 import com.example.quranapp.presentation.screen.quran.QuranScreen
 import com.example.quranapp.presentation.screen.settings.SettingsScreen
 import com.example.quranapp.presentation.screen.splash.SplashScreen
 import com.example.quranapp.presentation.screen.surah_details.SurahScreen
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(navController: NavHostController) {
     NavHost(
@@ -33,6 +36,21 @@ fun Navigation(navController: NavHostController) {
         composable(route = Screen.SettingsScreen.route) {
             SettingsScreen()
         }
+        composable(route = Screen.PageScreen.route) {
+            PageScreen(navController = navController)
+        }
+        composable(
+            route = Screen.PageDetails.route,
+            arguments = listOf(
+                navArgument("number") {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            val number = it.arguments?.getInt("number")!!
+
+            PageDetailsScreen(navController = navController, number = number)
+        }
         composable(route = Screen.JuzScreen.route) {
             JuzScreen(navController = navController)
         }
@@ -46,7 +64,7 @@ fun Navigation(navController: NavHostController) {
         ) {
             val number = it.arguments?.getInt("number")!!
 
-            JuzDetailsScreen(number = number)
+            JuzDetailsScreen(number = number, navController = navController)
         }
         composable(
             route = Screen.SurahDetails.route,

@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun JuzDetailsScreen(
-    navController: NavController = rememberNavController(),
+    navController: NavController,
     juzViewModel: JuzViewModel = hiltViewModel(),
     number: Int
 ) {

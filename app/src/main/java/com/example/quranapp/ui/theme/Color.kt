@@ -9,3 +9,6 @@ val Teal200 = Color(0xFF03DAC5)
 
 val ItemColor = Color(0x00FDF5F9)
 val MainColor = Color(0x00D33E85)
+
+val GradientOne = Color(0xFFff422b)
+val GradientTwo = Color(0xFFff9400)

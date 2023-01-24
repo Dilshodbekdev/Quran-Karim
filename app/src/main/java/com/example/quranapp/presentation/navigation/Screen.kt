@@ -9,6 +9,13 @@ sealed class Screen(val route: String) {
     object MainScreen : Screen("main_screen")
     object QuranScreen : Screen("quran_screen")
     object SettingsScreen : Screen("settings_screen")
+    object PageScreen : Screen("page_screen")
+    object PageDetails : Screen("page_details/{number}") {
+        fun passPageData(
+            number: Int
+        ) = "page_details/$number"
+    }
+
     object JuzScreen : Screen("juz_screen")
     object JuzDetails : Screen("juz_details/{number}") {
         fun passJuzData(
@@ -31,7 +38,7 @@ sealed class Screen(val route: String) {
 }
 
 val bottomNavigationItems = listOf(
-    BottomModule(Screen.QuranScreen.route, "Quran", R.drawable.ic_main),/*
+    BottomModule(Screen.PageScreen.route, "Quran", R.drawable.ic_main),/*
     BottomModule(Screen.QuranScreen.route, "Quran", Icons.Filled.Book),*/
     BottomModule(Screen.SettingsScreen.route, "Settings", R.drawable.ic_settings)
 )

@@ -8,9 +8,14 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.quranapp.R
 
-fun showToast(context: Context,text: String) {
+val AppBarCollapsedHeight = 56.dp
+val AppBarExpendedHeight = 226.dp
+val AppBarExpendedHeight1 = 380.dp
+
+fun showToast(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }
 

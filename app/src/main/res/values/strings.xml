@@ -2,4 +2,5 @@
     <string name="app_name">Quran App</string>
     <string name="surah_name">Surah</string>
     <string name="all">See all</string>
+    <string name="toast_pick_file_error">error</string>
 </resources>

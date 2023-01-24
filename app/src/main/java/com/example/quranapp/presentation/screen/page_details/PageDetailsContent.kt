@@ -1,4 +1,4 @@
-package com.example.quranapp.presentation.screen.juz_details
+package com.example.quranapp.presentation.screen.page_details
 
 import android.util.Log
 import android.widget.Toast
@@ -35,15 +35,16 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.quranapp.R
 import com.example.quranapp.domain.juz.entity.Ayah
+import com.example.quranapp.presentation.screen.juz_details.JuzMediaPlayerViewModel
 import com.example.quranapp.utils.fonts
 
 @Composable
-fun JuzDetailsContent(juzViewModel: JuzViewModel, navController: NavController) {
+fun PageDetailsContent(pageViewModel: PageViewModel, navController: NavController) {
 
     val context = LocalContext.current
 
-    when (val state = juzViewModel.juzDetails.collectAsState().value) {
-        is JuzViewModel.JuzState.IsLoading ->
+    when (val state = pageViewModel.pageDetails.collectAsState().value) {
+        is PageViewModel.PageState.IsLoading ->
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -51,22 +52,22 @@ fun JuzDetailsContent(juzViewModel: JuzViewModel, navController: NavController) 
             ) {
                 CircularProgressIndicator()
             }
-        is JuzViewModel.JuzState.ShowToast -> {
+        is PageViewModel.PageState.ShowToast -> {
             Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
             Log.d("TAG", "AyahList: ${state.message}")
         }
-        is JuzViewModel.JuzState.Error -> {
+        is PageViewModel.PageState.Error -> {
             Toast.makeText(context, state.rawResponse.toString(), Toast.LENGTH_SHORT).show()
             Log.d("TAG", "AyahList: ${state.rawResponse}")
         }
-        is JuzViewModel.JuzState.Success -> {
+        is PageViewModel.PageState.Success -> {
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 itemsIndexed(items = state.entity) { index, item ->
-                    JuzDetailItem(ayah = item, index = index + 1)
+                    PageDetailItem(ayah = item, index = index + 1)
                 }
             }
         }
@@ -75,7 +76,7 @@ fun JuzDetailsContent(juzViewModel: JuzViewModel, navController: NavController) 
 }
 
 @Composable
-fun JuzDetailItem(
+fun PageDetailItem(
     ayah: Ayah,
     index: Int,
     mediaPlayerViewModel: JuzMediaPlayerViewModel = hiltViewModel()
@@ -205,7 +206,8 @@ fun JuzDetailItem(
             modifier = Modifier
                 .fillMaxWidth(),
             text = ayah.text.substring(
-                ayah.text.lastIndexOf('(') + 1
+                ayah.text.lastIndexOf('(') + 1,
+                ayah.text.lastIndexOf(')')
             ),
             color = colorResource(id = R.color.text_name_color),
             fontSize = 16.sp,

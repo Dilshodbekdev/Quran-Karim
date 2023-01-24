@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,6 +35,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.quranapp.R
+import com.example.quranapp.utils.AppBarExpendedHeight1
 import com.example.quranapp.utils.fonts
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.IOException
@@ -46,6 +48,7 @@ fun AyahList(
     modifier: Modifier = Modifier,
     ayahViewModel: AyahViewModel,
     number: Int,
+    scrollState: LazyListState,
     mediaPlayerViewModel: MediaPlayerViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = Unit) {
@@ -75,16 +78,19 @@ fun AyahList(
             Log.d("TAG", "AyahList: ${state.rawResponse}")
         }
         is AyahViewModel.AyahsState.Success -> {
+            val list = state.entity
 
             LazyColumn(
+                contentPadding = PaddingValues(top = AppBarExpendedHeight1),
                 modifier = modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                state = scrollState
             ) {
                 items(state.entity) { ayah ->
 
                     Column(
                         modifier = modifier
-                            .padding(vertical = 10.dp)
+                            .padding(vertical = 10.dp, horizontal = 16.dp)
                     ) {
                         Box(
                             modifier = modifier
@@ -190,7 +196,28 @@ fun AyahList(
                             fontFamily = fonts,
                             fontWeight = FontWeight.Medium
                         )
-                        Spacer(modifier = modifier.height(10.dp))
+                        Spacer(modifier = modifier.height(16.dp))
+                        Text(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            text = "Tafsir:",
+                            color = colorResource(id = R.color.arabic_text_color),
+                            fontSize = 16.sp,
+                            fontFamily = fonts,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            text = ayah.text.substring(
+                                ayah.text.lastIndexOf('(') + 1,
+                                ayah.text.lastIndexOf(')')
+                            ),
+                            color = colorResource(id = R.color.text_name_color),
+                            fontSize = 16.sp,
+                            fontFamily = fonts,
+                            fontWeight = FontWeight.Medium
+                        )
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -206,5 +233,4 @@ fun AyahList(
         }
         else -> {}
     }
-
 }
